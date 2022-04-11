@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OfferController!{% endblock %}
+
+{% block body %}
+<section id="offerFormSection">
+    <h2>Création d'une offre d'emploi.</h2>
+    {# {{form(form)}} #}
+
+    {{ form_start(form)}}
+    {{ form_errors(form)}}
+    {{ form_row(form.title, {'label':'Nom de l\'offre'})}}
+    {{ form_row(form.description, {'label':'Description'})}}
+    {{ form_row(form.city, {'label':'Ville'})}}
+    {{ form_row(form.salary, {'label':'Salaire annuel'})}}
+    {{ form_row(form.workingTime, {'label':'Total d\'heure hedbomadaire '})}}
+        {{ form_row(form.contractType, {'label':'Type de contrat'})}}
+    {{ form_row(form.remote, {'label':'Coché si travail en distanciel'})}}
+    {# {% for contract in form.contractType %}
+            <p>{{ form_row(contract.name) }}</p>
+        {% endfor %} #}
+    {{ form_end(form)}}
+
+    <a href="/offer" class="button">Retour à la liste.</a>
+</section>
+
+
+
+{% endblock %}

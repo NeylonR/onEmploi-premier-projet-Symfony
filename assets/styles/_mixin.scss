@@ -1,0 +1,16 @@
+@mixin flex ( $just : center, $direction : row, $align : center, $wrap : wrap) {
+    display: flex;
+    justify-content: $just;
+    align-items: $align;
+    flex-direction: $direction;
+    flex-wrap: $wrap;
+  }
+  
+@mixin transi($time : .3s) {
+  transition: all $time ease-in-out;
+}
+
+$primaryColor: #fbfefd;
+$secondaryColor: #ded4f2;
+$thirdColor: hsl(227deg 25% 21%);
+$fourthColor: #a2a6cb;

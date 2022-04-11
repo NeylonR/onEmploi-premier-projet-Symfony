@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OfferController!{% endblock %}
+
+{% block body %}
+
+<section id="offerDetailsSection">
+    <div class="offerContainer">
+            <div class="leftBlock">
+                <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
+                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                {% if offer.author.logo is not empty %}
+                <img src="{{vich_uploader_asset(offer.author)}}" alt="" height="50">
+                {% endif %}
+                <p class="offerDescription">{{ offer.description|nl2br}}</p> 
+                <p>Publié le {{offer.createdAt|date('d/m/Y')}}
+                {% if offer.updatedAt %}. </p>
+                    <p>Dernière actualisation le {{offer.updatedAt|date('d/m/Y à h:m')}} </p>
+                {% endif %}
+            </div>
+            <div class='rightBlock'>
+                {% if offer.remote %}
+                    <p>Télétravail accepté</p>
+                {% else %}
+                    <p>Télétravail refusé</p>
+                {% endif %}
+                    <p>{{offer.salary}}€/mois</p>
+                    <p>{{(offer.getContractType())}}</p>
+                {% if app.user == offer.author %}
+                    <form class="hiddenForm" action="{{path('app_offer_delete', {id:offer.id})}}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_delete_' ~ offer.id) }}">
+                    <input type="submit" value="Supprimer" class="button delete">
+                    </form>
+
+                    <form class="hiddenForm" action="{{path('app_offer_edit', {id:offer.id})}}" method="POST">
+                    <input type="hidden" name="_method" value="EDIT">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_edit_' ~ offer.id) }}">
+                    <input type="submit" value="Modifier" class="button">
+                    </form>
+                {% endif %}
+                {% if is_granted('ROLE_CANDIDATE') and app.user in offer.applicants %}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button delete">Retirer ma candidature</a>
+                {% elseif is_granted('ROLE_CANDIDATE') and app.user not in offer.applicants%}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button">Postuler</a>
+                {% endif %} 
+            </div>
+        </div>
+
+        {% if app.user == offer.author %}
+            <h3>Liste des candidatures qui vont ont été envoyé.</h3>
+            <div class="candidatesContainer">
+            {% for applicant in offer.applicants %}
+                <div class="candidateCard">
+                <h4>{{applicant.firstName}} {{applicant.lastName}}</h4>
+                {% if applicant.photo is not empty %}
+                    <img src="{{vich_uploader_asset(applicant)}}" alt="Une photo de {{applicant.firstName}} {{applicant.lastName}}">
+                {% else %}
+                <img src="{{asset('images/placeholder.png')}}" alt="Une photo de {{applicant.firstName}} {{applicant.lastName}}">
+                {% endif %}
+                <p><a href="mailto:{{applicant.email}}">{{applicant.email}}</a></p>
+                </div>
+            {% endfor %}
+            </div>
+
+            <h3>Liste des candidats qui cherche actuellement un(e) {{offer.contractType|lower}}</h3>
+            <div class="candidatesContainer">
+            {% for candidate in candidates %}
+                <div class="candidateCard">
+                <h4>{{candidate.firstName}} {{candidate.lastName}}</h4>
+                {% if candidate.photo is not empty %}
+                    <img src="{{vich_uploader_asset(candidate)}}" alt="Une photo de {{candidate.firstName}} {{candidate.lastName}}">
+                {% else %}
+                <img src="{{asset('images/placeholder.png')}}" alt="Une photo de {{candidate.firstName}} {{candidate.lastName}}">
+                {% endif %}
+                <p><a href="mailto:{{candidate.email}}">{{candidate.email}}</a></p>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        <a href="/offer" class="button">Retour à la liste.</a>
+</section>
+
+
+{% endblock %}

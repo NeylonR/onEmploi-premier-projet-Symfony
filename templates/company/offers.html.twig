@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des offres.{% endblock %}
+
+{% block body %}
+<section id="offerSection">
+    <h2>Mes offres.</h2>
+
+    <div class="offersContainer">
+{% if offers is not empty %}
+    {% for offer in offers %}
+        <div class="offerContainer">
+            <div class="leftBlock">
+                <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
+                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                <p class="offerDescription">
+                {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}.
+                {# {{offer.description | slice(0,150)}}...#} </p> 
+                <p>Publié le {{offer.createdAt|date('d/m/Y')}}
+                {% if offer.updatedAt %}. </p>
+                    <p>Dernière actualisation le {{offer.updatedAt|date('d/m/Y à h:m')}} </p>
+                {% endif %}
+            </div>
+            <div class='rightBlock'>
+                {% if offer.remote %}
+                    <p>Télétravail accepté</p>
+                {% else %}
+                    <p>Télétravail refusé</p>
+                {% endif %}
+                    <p>{{offer.salary}}€/mois</p>
+                    <p>{{(offer.getContractType())}}</p>  
+                {% if app.user == offer.author %}
+                    <form class="hiddenForm" action="{{path('app_offer_delete', {id:offer.id})}}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_delete_' ~ offer.id) }}">
+                    <input type="submit" value="Supprimer" class="button delete">
+                    </form>
+
+                    <form class="hiddenForm" action="{{path('app_offer_edit', {id:offer.id})}}" method="POST">
+                    <input type="hidden" name="_method" value="EDIT">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_edit_' ~ offer.id) }}">
+                    <input type="submit" value="Modifier" class="button">
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div>Vous n'avez postulé à aucune offre.</div>
+{% endif %}
+    </div>
+</section>
+{% endblock %}

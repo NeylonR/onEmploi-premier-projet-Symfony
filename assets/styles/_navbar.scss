@@ -1,0 +1,37 @@
+#navbar{
+    @include flex;
+    // position: fixed;
+    // top: 0;
+    // left: 50%;
+    // transform: translateX(-50%);
+
+    ul{
+        @include flex;  
+        background-color: black;
+        border-radius: 15px;
+
+        li{   
+            color: white;
+            @include transi;
+            cursor: pointer;
+
+            &:hover{
+                background-color: grey;
+            }
+
+            &:first-of-type{
+                border-radius: 15px 0 0 15px;
+            }
+
+            &:last-of-type{
+                border-radius: 0 15px 15px 0;
+            }
+
+            a{
+                display: inline-block;
+                color:white;
+                padding: 1em;
+            }
+        }
+    }
+}

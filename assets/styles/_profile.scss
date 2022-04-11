@@ -1,0 +1,22 @@
+#profileSection {
+    padding: 2em 0;
+    text-align: center;
+    ul{
+        @include flex(flex-start, column, flex-start);
+    }
+    form{
+        margin: 0 auto;
+    }
+
+    .infoContainer{
+        @include flex(space-evenly,row,center);
+    }
+
+    #candidate_contractType{
+        @include flex(center, row, center, nowrap);
+        label{
+            padding-right: 1em;
+        }
+
+    }
+}

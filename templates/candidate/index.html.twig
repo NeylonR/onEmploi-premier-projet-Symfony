@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+<section id="profileSection">
+    <h2>Vos informations.</h2>
+    <div class="infoContainer">
+        <ul>
+            <li><strong>Nom</strong> : {{candidate.firstName}}</li>
+            <li><strong>Prénom</strong> : {{candidate.lastName}}</p>
+            <li><strong>Age</strong> : {{candidate.age}}</li>
+            <li><strong>Ville</strong> : {{candidate.city}}</li>
+            <li><strong>Email</strong> :  {{candidate.email}}</li>
+        </ul>
+        <div>
+        {% if candidate.photo is not empty %}
+            <img src="{{vich_uploader_asset(candidate)}}" alt="" height="150">
+            {% else %}
+                <img src="{{asset('images/placeholder.png')}}" height="150" alt="">
+        {% endif %}
+        </div>
+    </div>
+    
+    {% if action == false %}
+        <a style="margin-top:.7em"href="/candidate/profile/editPassword" class="button">Modifier mon mot de passe.</a>
+        <a style="margin-top:.7em"href={{path('app_candidate_editPhoto')}} class="button">Modifier ma photo.</a>
+        <a style="margin-top:.7em"href="profile/edit" class="button">Modifier mes infos.</a>
+    {% endif %}
+
+    {% if action == 'modifyPassword' %}
+        {{form_start(form)}}
+        {{ form_row(form.plainPassword,{label: 'Mot de passe'})}}
+        {{ form_row(form.agreeTerms,{label: 'Êtes vous sur ?'})   }}
+        <button type="submit" class="button">Modifier</button>
+        {{form_end(form)}}
+    {% endif %}
+
+    {% if action == 'modifyPhoto' %}
+        {{form_start(form)}}
+        {{ form_row(form.photoFile,{label: 'Changer de photo de profil'})}}
+        {{ form_row(form.agreeTerms,{label: 'Êtes vous sur ?'})   }}
+        <button type="submit" class="button">Modifier</button>
+        {{form_end(form)}}
+    {% endif %}
+    
+    {# <a href="/profil/cv" class="button">Créer mon CV</a> #}
+
+</section>
+{% endblock %}

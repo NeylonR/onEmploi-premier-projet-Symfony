@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Offres qui vous correspondent.{% endblock %}
+
+{% block body %}
+<section id="offerSection">
+{% if offers|length > 1 %}
+    <h2>Offres qui vous correspondent.</h2>
+    {% elseif offers|length == 1 %}
+    <h2>Offre qui vous corresponde.</h2>
+    {% else %}
+{% endif %}
+
+{% if offers is not empty %}
+    <div class="offersContainer">
+    {% for offer in offers %}
+        <div class="offerContainer">
+            <div class="leftBlock">
+                <h3><a href="{{path('app_offer_details', {id:offer.id})}}"> {{offer.title}} </a></h3>
+                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                <p class="offerDescription">
+                {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}.</p> 
+                <p>Publié le {{offer.createdAt|date('d/m/Y')}}
+                {% if offer.updatedAt %}. </p>
+                    <p>Dernière actualisation le {{offer.updatedAt|date('d/m/Y à h:m')}} </p>
+                {% endif %}
+            </div>
+            <div class='rightBlock'>
+                {% if offer.remote %}
+                    <p>Télétravail accepté</p>
+                {% else %}
+                    <p>Télétravail refusé</p>
+                {% endif %}
+                    <p>{{offer.salary}}€/mois</p>
+                    <p>{{(offer.getContractType())}}</p>
+                {% if is_granted('ROLE_CANDIDATE') and app.user in offer.applicants %}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button delete">Retirer ma candidature</a>
+                {% else %}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button">Postuler</a>
+                {% endif %}    
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    {% else %}
+    <div>Aucune offre de disponible. Vous pouvez modifier vos préférences de type de contrat dans votre <a href="{{path('app_candidate_profile')}}" class="button">profil</a></div>
+{% endif %}
+
+<a href="{{path('app_candidate_applications')}}" class="button">Mes candidatures.</a>
+</section>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des offres.{% endblock %}
+
+{% block body %}
+<section id="offerSection">
+    <h2>Liste des offres.</h2>
+
+    <div class="offersContainer">
+    {% for offer in offers %}
+        <div class="offerContainer">
+            <div class="leftBlock">
+                <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
+                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                <p class="offerDescription">
+                {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}.
+                {# {{offer.description | slice(0,150)}}...#} </p> 
+                <p>Publié le {{offer.createdAt|date('d/m/Y')}}
+                {% if offer.updatedAt %}. </p>
+                    <p>Dernière actualisation le {{offer.updatedAt|date('d/m/Y à h:m')}} </p>
+                {% endif %}
+            </div>
+            <div class='rightBlock'>
+                {% if offer.remote %}
+                    <p>Télétravail accepté</p>
+                {% else %}
+                    <p>Télétravail refusé</p>
+                {% endif %}
+                    <p>{{offer.salary}}€/mois</p>
+                    <p>{{(offer.getContractType())}}</p>
+                {% if is_granted('ROLE_COMPANY') and app.user == offer.author or is_granted('ROLE_ADMIN') %}
+                    <form class="hiddenForm" action="{{path('app_offer_delete', {id:offer.id})}}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_delete_' ~ offer.id) }}">
+                    <input type="submit" value="Supprimer" class="button delete">
+                    </form>
+
+                    <form class="hiddenForm" action="{{path('app_offer_edit', {id:offer.id})}}" method="POST">
+                    <input type="hidden" name="_method" value="EDIT">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_edit_' ~ offer.id) }}">
+                    <input type="submit" value="Modifier" class="button">
+                    </form>
+                {% endif %}
+                {% if is_granted('ROLE_CANDIDATE') and app.user in offer.applicants %}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button delete">Retirer ma candidature</a>
+                {% elseif is_granted('ROLE_CANDIDATE') and app.user not in offer.applicants%}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button">Postuler</a>
+                {% endif %} 
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+    {% if is_granted('ROLE_COMPANY') %}
+        <a href="/offer/create" class="button" >Nouvelle offre</a>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des offres.{% endblock %}
+
+{% block body %}
+<section id="profileSection">
+    <h2>Modifier mes informations.</h2>
+        {{ form_start(form)}}
+        {{ form_row(form.firstName,{label: 'Nom'})   }}
+        {{ form_row(form.lastName,{label: 'Prenom'})   }}
+        {{ form_row(form.age,{label: 'Age'})   }}
+        {{ form_row(form.city,{label: 'Ville'})   }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.contractType,{label: 'Type de contrat recherché'})   }}
+        {{ form_row(form.agreeTerms,{label: 'Êtes vous sur ?'})   }}
+        <button type="submit" class="button">Modifier</button>
+        {{ form_end(form)}}
+
+</section>
+{% endblock %}

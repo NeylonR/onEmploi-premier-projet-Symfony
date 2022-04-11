@@ -1,0 +1,140 @@
+#offerSection{
+    padding: 2em 0;
+    text-align: center;
+    h2{
+        text-align: center
+    }
+    .offersContainer{
+        @include flex;
+        padding: 2em;
+        text-align: left;
+
+        .offerContainer{
+            @include flex(space-between, $wrap:nowrap);
+            @include transi(.2s);
+            width: 80%;
+            padding:1em 2em;
+            border: 2px solid $secondaryColor;
+            border-bottom: none;
+
+            &:last-child{
+                border-bottom: 2px solid $secondaryColor;
+            }
+
+            &:hover{
+                background-color: $secondaryColor;
+            }
+
+            h3{
+                padding-bottom: .2em;
+            }
+
+            .offerDescription{
+                padding: .8em 0;
+            }
+
+            .leftBlock{
+                padding: .5em 4em .5em 0em;
+            }
+
+            .rightBlock{
+                padding: .5em;
+                @include flex(flex-start,column,flex-start);
+                gap:.1em;
+                p{
+                    padding: .3em 0;
+                }
+            }
+        }
+    } 
+}
+
+#offerFormSection{
+    @include flex(center, column);
+    padding: 4em 0;
+    text-align: center;
+    // form{
+    //     @include flex(center, column, stretch);
+    //     width: 30%;
+    //     padding: 0 0 3em 0;
+
+    //     input, textarea, select{
+    //         font-family: roboto;
+    //         padding: .5em;
+    //         border: 1px solid black;
+    //         border-radius: 18px;
+    //         @include transi;
+    //         position: relative;
+    //         border-bottom: 2px black solid;
+    //         box-sizing: border-box;
+    //         resize: none;
+
+    //         &:focus, &:focus{
+    //             outline: none;
+    //             border-bottom: 2px grey solid;
+    //         }
+
+    //         &:valid{
+    //             border-bottom: 2px green solid;
+    //         }
+    //     }
+
+    //     button, input[type='checkbox']{
+    //         align-self: center
+    //     }
+
+    //     div{
+    //         @include flex(flex-start, column, stretch);
+    //         padding: .5em 0;
+    //     }
+
+    //     label{
+    //         padding-bottom: .2em;
+    //     }
+    // }
+    
+}
+
+#offerDetailsSection{
+    padding: 2em 0;
+    @include flex(center, column, center);
+    // text-align: center;
+    h2{
+        text-align: center
+    }
+
+    .offerContainer{
+        @include flex(space-between, $wrap:nowrap);
+        @include transi(.2s);
+        width: 80%;
+        padding:1em 2em;
+        margin-bottom: 2em;
+        border-bottom: 1px solid #eee;
+
+        &:hover{
+            background-color: rgba(207, 207, 207, 0.61);
+        }
+
+        h3{
+            padding-bottom: .2em;
+        }
+
+        .offerDescription{
+            padding: .8em 0;
+        }
+
+        .leftBlock{
+            padding: .5em 4em .5em 0em;
+        }
+
+        .rightBlock{
+            padding: .5em;
+            @include flex(flex-start,column,flex-end);
+            gap:.1em;
+            p{
+                padding: .3em 0;
+            }
+        }
+    }
+    
+}

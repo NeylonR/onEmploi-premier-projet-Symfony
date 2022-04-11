@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des offres.{% endblock %}
+
+{% block body %}
+<section id="offerSection">
+    <h2>Les offres auquels j'ai postulé.</h2>
+
+    <div class="offersContainer">
+{% if offers is not empty %}
+    {% for offer in offers %}
+        <div class="offerContainer">
+            <div class="leftBlock">
+                <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
+                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                <p class="offerDescription">
+                {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}.
+                {# {{offer.description | slice(0,150)}}...#} </p> 
+                <p>Publié le {{offer.createdAt|date('d/m/Y')}}
+                {% if offer.updatedAt %}. </p>
+                    <p>Dernière actualisation le {{offer.updatedAt|date('d/m/Y à h:m')}} </p>
+                {% endif %}
+            </div>
+            <div class='rightBlock'>
+                {% if offer.remote %}
+                    <p>Télétravail accepté</p>
+                {% else %}
+                    <p>Télétravail refusé</p>
+                {% endif %}
+                    <p>{{offer.salary}}€/mois</p>
+                    <p>{{(offer.getContractType())}}</p>
+                {% if is_granted('ROLE_CANDIDATE') and app.user in offer.applicants %}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button delete">Retirer ma candidature</a>
+                {% else %}
+                    <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button">Postuler</a>
+                {% endif %}    
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <div>Vous n'avez postulé à aucune offre.</div>
+{% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,47 @@
+#registerSection{
+    @include flex(center, column);
+    padding: 4em 0;
+    text-align: center;
+
+    button{
+        margin-top: 2em;
+    }
+    // form{
+    //     @include flex(center, column, stretch);
+    //     width: 30%;
+    //     padding: 0 0 3em 0;
+
+    //     input, textarea{
+    //         padding: .8em;
+    //         border: 1px solid black;
+    //         border-radius: 12px;
+    //         @include transi;
+    //         position: relative;
+    //         border-bottom: 2px black solid;
+    //         box-sizing: border-box;
+    //         resize: none;
+
+    //         &:focus, &:focus{
+    //             outline: none;
+    //             border-bottom: 2px grey solid;
+    //         }
+
+    //         &:valid{
+    //             border-bottom: 2px green solid;
+    //         }
+    //     }
+
+    //     button, input[type='checkbox']{
+    //         align-self: center
+    //     }
+
+    //     textarea{
+    //         // height: 150px;
+    //         resize: none;
+    //     }
+    //     div{
+    //         @include flex(flex-start, column, stretch);
+    //         padding: .5em 0;
+    //     }
+    // }
+}
