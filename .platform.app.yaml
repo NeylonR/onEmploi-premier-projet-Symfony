@@ -1,0 +1,83 @@
+name: app
+
+type: php:8.1
+
+runtime:
+    extensions:
+        - apcu
+        - mbstring
+        - sodium
+        - ctype
+        - iconv
+
+dependencies:
+    php:
+        composer/composer: "^2"    
+
+#variables:
+#    php:
+#        # uncomment on PHP 7.4+
+#        #opcache.preload: /app/config/preload.php
+
+build:
+    flavor: composer
+
+workers:
+    messenger:
+        # PHP background workers usually don't require much CPU. See
+        # https://symfony.com/doc/current/cloud/cookbooks/resources_allocation.html
+        # for more information
+        size: XS
+        resources:
+            base_memory: 64 # Keep in sync with the `memory-limit` flag value
+            memory_ratio: 128
+        commands:
+            # Don't forget to update your receiver name(s)
+            start: symfony console --time-limit=3600 --memory-limit=64M messenger:consume async
+
+
+hooks:
+    build: |
+        set -x -e
+
+        curl -fs https://get.symfony.com/cloud/configurator | (>&2 bash)
+        
+        bin/console assets:install --no-debug
+        bin/console cache:clear
+        (>&2 symfony-build)
+
+
+    deploy: |
+        set -x -e
+
+        bin/console assets:install --symlink --relative public
+        bin/console cache:clear
+        (>&2 symfony-deploy)
+
+
+relationships:
+    database: "db:mysql"
+
+# The size of the persistent disk of the application (in MB).
+disk: 2048
+
+# The mounts that will be performed when the package is deployed.
+mounts:
+    "/var/cache":
+        source: local
+        source_path: "cache"
+    "/var/log":
+        source: local
+        source_path: "log"
+    "/var/sessions":
+        source: local
+        source_path: "sessions"
+
+# The configuration of app when it is exposed to the web.
+web:
+    locations:
+        "/":
+            # The public directory of the app, relative to its root.
+            root: "public"
+            # The front-controller script to send non-static requests to.
+            passthru: "/index.php"
