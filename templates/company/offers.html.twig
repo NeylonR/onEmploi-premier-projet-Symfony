@@ -12,7 +12,7 @@
         <div class="offerContainer">
             <div class="leftBlock">
                 <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
-                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                <p><strong>Posté par</strong> : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
                 <p class="offerDescription">
                 {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}.
                 {# {{offer.description | slice(0,150)}}...#} </p> 
@@ -27,9 +27,10 @@
                 {% else %}
                     <p>Télétravail refusé</p>
                 {% endif %}
-                    <p>{{offer.salary}}€/mois</p>
+                    <p>{{offer.salary}}€/année</p>
                     <p>{{(offer.getContractType())}}</p>  
                 {% if app.user == offer.author %}
+                   <div class="hiddenFormContainer">
                     <form class="hiddenForm" action="{{path('app_offer_delete', {id:offer.id})}}" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_delete_' ~ offer.id) }}">
@@ -41,6 +42,7 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_edit_' ~ offer.id) }}">
                     <input type="submit" value="Modifier" class="button">
                     </form>
+                   </div>
                 {% endif %}
             </div>
         </div>

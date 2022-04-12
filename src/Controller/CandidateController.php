@@ -6,8 +6,8 @@ use App\Entity\Cv;
 use App\Form\CvType;
 use App\Entity\Candidate;
 use App\Form\CandidateType;
-use App\Form\ChangePasswordType;
 use App\Form\PhotoProfileType;
+use App\Form\ChangePasswordType;
 use App\Repository\OfferRepository;
 use App\Repository\CandidateRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('/candidate')]
 #[IsGranted('ROLE_CANDIDATE', message: 'You must be logged-in to access this resource')]
@@ -55,7 +56,7 @@ class CandidateController extends AbstractController
     }
 
     #[Route('/profile/editPassword', name: 'app_candidate_editPassword')]
-    public function editPassword(Request $request, EntityManagerInterface $manager): Response
+    public function editPassword(UserPasswordHasherInterface $userPasswordHasher, Request $request, EntityManagerInterface $manager): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class, $user);
@@ -63,6 +64,12 @@ class CandidateController extends AbstractController
         $form->handleRequest($request);
         
             if($form->isSubmitted() && $form->isValid()){
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user, 
+                        $form->get('plainPassword')->getData()
+                        )
+                    );
                 $manager->flush();
 
                 return $this->redirectToRoute('app_candidate_profile');
@@ -86,6 +93,7 @@ class CandidateController extends AbstractController
         
             if($form->isSubmitted() && $form->isValid()){
                 $manager->flush();
+                $this->getUser()->setPhotoFile(null);
 
                 return $this->redirectToRoute('app_candidate_profile');
             } 

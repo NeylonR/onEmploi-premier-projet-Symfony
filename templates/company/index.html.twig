@@ -1,20 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CompanyController!{% endblock %}
+{% block title %}Profil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<section id="profileSection">
+    <h2>Vos informations.</h2>
+    <div class="infoContainer">
+        <ul>
+            <li><strong>Nom de l'entreprise</strong> : {{company.Name}}</li>
+            <li><strong>Ville</strong> : {{company.city}}</li>
+            <li><strong>Email</strong> :  {{company.email}}</li>
+        </ul>
+        <div>
+        {% if company.logo is not empty %}
+            <img src="{{vich_uploader_asset(company)}}" alt="">
+            {% else %}
+                <img src="{{asset('images/placeholder.png')}}" alt="">
+        {% endif %}
+        </div>
+    </div>
+    
+    {% if action == false %}
+        <a style="margin-top:.7em"href="/company/profile/editPassword" class="button">Modifier mon mot de passe.</a>
+        <a style="margin-top:.7em"href={{path('app_company_editPhoto')}} class="button">Modifier ma photo.</a>
+        <a style="margin-top:.7em"href="profile/edit" class="button">Modifier mes infos.</a>
+    {% endif %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {% if action == 'modifyPassword' %}
+        {{form_start(form)}}
+        {{ form_row(form.plainPassword,{label: 'Mot de passe'})}}
+        {{ form_row(form.agreeTerms,{label: 'Êtes vous sur ?'})   }}
+        <button type="submit" class="button">Modifier</button>
+        {{form_end(form)}}
+    {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/xampp/htdocs/onEmploi/src/Controller/CompanyController.php'|file_link(0) }}">src/Controller/CompanyController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/xampp/htdocs/onEmploi/templates/company/index.html.twig'|file_link(0) }}">templates/company/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {% if action == 'modifyPhoto' %}
+        {{form_start(form)}}
+        {{ form_row(form.logoFile,{label: 'Changer de photo de profil'})}}
+        <button type="submit" class="button">Modifier</button>
+        {{form_end(form)}}
+    {% endif %}
+
+</section>
 {% endblock %}
+

@@ -1,22 +1,19 @@
 #navbar{
     @include flex;
-    // position: fixed;
-    // top: 0;
-    // left: 50%;
-    // transform: translateX(-50%);
-
     ul{
         @include flex;  
-        background-color: black;
+        background-color: $thirdColor;
         border-radius: 15px;
 
         li{   
             color: white;
             @include transi;
+            background-color: $thirdColor;
             cursor: pointer;
 
             &:hover{
-                background-color: grey;
+                // background-color: $fourthColor;
+                filter: brightness(130%);
             }
 
             &:first-of-type{

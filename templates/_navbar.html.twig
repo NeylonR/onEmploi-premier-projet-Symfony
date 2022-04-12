@@ -1,14 +1,17 @@
 <nav id="navbar">
     <ul>
-        <li><a href="{{path('app_home')}}">Accueil</a></li>
+        {# <li><a href="{{path('app_home')}}">Accueil</a></li> #}
         <li><a href="{{path('app_offer_index')}}">Liste des offres</a></li>
         {% if is_granted('ROLE_COMPANY') %}
             <li><a href="{{path('app_offer_create')}}">Créer une offre</a></li>
             <li><a href="{{path('app_company_offers')}}">Mes offres</a></li>
+            <li><a href="{{path('app_company_profile')}}">Profil</a></li>
         {% endif %}
-        {% if app.user %}
+        {% if is_granted('ROLE_CANDIDATE') %}
             <li><a href="{{path('app_candidate_offers')}}">Offres personnalisés</a></li>
             <li><a href="{{path('app_candidate_profile')}}">Profil</a></li>
+        {% endif %}
+        {% if app.user %}
             <li><a href="/logout">Deconnexion</a></li>
         {% endif %}
         {% if app.user != true %}

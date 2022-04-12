@@ -11,7 +11,10 @@
         <div class="offerContainer">
             <div class="leftBlock">
                 <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
-                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                <p><strong>Posté par</strong> : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                {% if offer.author.logo is not empty %}
+                <img src="{{vich_uploader_asset(offer.author)}}" alt="">
+                {% endif %}
                 <p class="offerDescription">
                 {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}.
                 {# {{offer.description | slice(0,150)}}...#} </p> 
@@ -26,9 +29,10 @@
                 {% else %}
                     <p>Télétravail refusé</p>
                 {% endif %}
-                    <p>{{offer.salary}}€/mois</p>
+                    <p>{{offer.salary}}€/année</p>
                     <p>{{(offer.getContractType())}}</p>
                 {% if is_granted('ROLE_COMPANY') and app.user == offer.author or is_granted('ROLE_ADMIN') %}
+                    <div class="hiddenFormContainer">
                     <form class="hiddenForm" action="{{path('app_offer_delete', {id:offer.id})}}" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_delete_' ~ offer.id) }}">
@@ -40,6 +44,7 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_edit_' ~ offer.id) }}">
                     <input type="submit" value="Modifier" class="button">
                     </form>
+                   </div>
                 {% endif %}
                 {% if is_granted('ROLE_CANDIDATE') and app.user in offer.applicants %}
                     <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button delete">Retirer ma candidature</a>

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Serializable;
 use App\Entity\Offer;
 use App\Entity\ContractType;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,14 +12,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: CandidateRepository::class)]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 /**
  * @ORM\Entity
  * @Vich\Uploadable
  */
-class Candidate implements UserInterface, \Serializable, PasswordAuthenticatedUserInterface
+class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -62,31 +63,13 @@ class Candidate implements UserInterface, \Serializable, PasswordAuthenticatedUs
      * @Assert\File(
      *     maxSize = "10000k",
      *     mimeTypes = {"image/jpg", "image/jpeg", "image/png"},
-     *     mimeTypesMessage = "Please upload a valid image"
+     *     mimeTypesMessage = "Veuillez selectionner un format d'image valide ( jpg/jpeg/png)."
      * )
      */
     private $photoFile;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $updatedAt;
-
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->email,
-            $this->password,
-        ));
-    }
-
-    public function unserialize($serialized)
-    {
-        list(
-            $this->id,
-            $this->email,
-            $this->password,
-        ) = unserialize($serialized);
-    }
 
     public function __construct()
     {

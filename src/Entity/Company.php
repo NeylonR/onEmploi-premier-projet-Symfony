@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -50,6 +51,11 @@ class Company implements UserInterface, PasswordAuthenticatedUserInterface
 
     /** 
     *@Vich\UploadableField(mapping= "company_logo", fileNameProperty="logo")
+    * @Assert\File(
+    *     maxSize = "10000k",
+    *     mimeTypes = {"image/jpg", "image/jpeg", "image/png"},
+    *     mimeTypesMessage = "Veuillez selectionner un format d'image valide ( jpg/jpeg/png)."
+    * )
     */
     private $logoFile;
     
@@ -236,6 +242,18 @@ class Company implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
 
         return $this;
     }

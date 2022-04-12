@@ -11,8 +11,12 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        if ($this->isGranted('ROLE_CANDIDATE')) {
+            return $this->redirectToRoute('app_candidate_profile');
+        }
+        if ($this->isGranted('ROLE_COMPANY')) {
+            return $this->redirectToRoute('app_company_profile');
+        }
+        return $this->redirectToRoute('app_offer_index');
     }
 }

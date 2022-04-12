@@ -93,8 +93,11 @@ form:not(.hiddenForm){
         @include flex(flex-start, column, stretch);
         padding: .5em 0;
     }
+}
 
-    
+.hiddenFormContainer{
+    @include flex(center, column, flex-start);
+    gap: .3em;
 }
 
 .candidatesContainer{

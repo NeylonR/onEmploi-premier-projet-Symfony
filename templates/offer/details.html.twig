@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello OfferController!{% endblock %}
+{% block title %}{{offer.title}}{% endblock %}
 
 {% block body %}
 
@@ -8,9 +8,9 @@
     <div class="offerContainer">
             <div class="leftBlock">
                 <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
-                <p>Posté par : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
+                <p><strong>Posté par</strong> : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
                 {% if offer.author.logo is not empty %}
-                <img src="{{vich_uploader_asset(offer.author)}}" alt="" height="50">
+                <img src="{{vich_uploader_asset(offer.author)}}" alt="">
                 {% endif %}
                 <p class="offerDescription">{{ offer.description|nl2br}}</p> 
                 <p>Publié le {{offer.createdAt|date('d/m/Y')}}
@@ -20,13 +20,14 @@
             </div>
             <div class='rightBlock'>
                 {% if offer.remote %}
-                    <p>Télétravail accepté</p>
+                    <p>Télétravail accepté.</p>
                 {% else %}
-                    <p>Télétravail refusé</p>
+                    <p>Télétravail refusé.</p>
                 {% endif %}
-                    <p>{{offer.salary}}€/mois</p>
+                    <p>Salaire annuel : {{offer.salary}}€.</p>
                     <p>{{(offer.getContractType())}}</p>
                 {% if app.user == offer.author %}
+                    <div class="hiddenFormContainer">
                     <form class="hiddenForm" action="{{path('app_offer_delete', {id:offer.id})}}" method="POST">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_delete_' ~ offer.id) }}">
@@ -38,6 +39,7 @@
                     <input type="hidden" name="csrf_token" value="{{ csrf_token('offer_edit_' ~ offer.id) }}">
                     <input type="submit" value="Modifier" class="button">
                     </form>
+                   </div>
                 {% endif %}
                 {% if is_granted('ROLE_CANDIDATE') and app.user in offer.applicants %}
                     <a href="{{path('app_offer_apply', {id:offer.id})}}" class="button delete">Retirer ma candidature</a>

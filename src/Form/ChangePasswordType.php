@@ -9,10 +9,9 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ChangePasswordType extends AbstractType
 {
@@ -23,7 +22,7 @@ class ChangePasswordType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => ['autocomplete' => 'new-password', 'minLength' => '4'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez renseigner un mot de passe.',
@@ -51,7 +50,7 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Candidate::class,
+            'data_class' => UserInterface::class,
         ]);
     }
 }
