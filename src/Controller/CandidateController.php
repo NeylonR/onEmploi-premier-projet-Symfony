@@ -128,7 +128,7 @@ class CandidateController extends AbstractController
     }
 
     #[Route('/applications', name: 'app_candidate_applications')]
-    public function applications(CandidateRepository $candidateRepository, OfferRepository $offerRepository): Response
+    public function applications(CandidateRepository $candidateRepository): Response
     {
         $user = $candidateRepository->findOneBy(['email' => $this->getUser()->getUserIdentifier()]); // Returns a Candidate object
 
@@ -136,30 +136,6 @@ class CandidateController extends AbstractController
 
         return $this->render('candidate/applications.html.twig', [
             'offers' => $offers,
-        ]);
-    }
-
-    #[Route('/profile/cv', name: 'app_candidate_cv')]
-    public function cv(Request $request, EntityManagerInterface $manager): Response
-    {
-        if($this->getUser()){
-            $cv = new Cv();
-            $form = $this->createForm(CvType::class, $cv);
-
-            $form->handleRequest($request);
-
-                if($form->isSubmitted() && $form->isValid()){
-                    $manager->persist($cv);
-                    $manager->flush();
-
-                    return $this->redirectToRoute('app_candidate_profile');
-                }
-            return $this->render('candidate/cv.html.twig', [
-                'form' => $form->createView()
-            ]);
-        }
-        return $this->render('candidate/cv.html.twig', [
-            'controller_name' => 'candidateController',
         ]);
     }
 }

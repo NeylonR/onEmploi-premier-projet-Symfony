@@ -50,7 +50,8 @@
         </div>
 
         {% if app.user == offer.author %}
-            <h3>Liste des candidatures qui vont ont été envoyé.</h3>
+            {% if offer.applicants is not empty %}
+                <h3>Liste des candidatures qui vont ont été envoyé.</h3>
             <div class="candidatesContainer">
             {% for applicant in offer.applicants %}
                 <div class="candidateCard">
@@ -64,21 +65,23 @@
                 </div>
             {% endfor %}
             </div>
-
-            <h3>Liste des candidats qui cherche actuellement un(e) {{offer.contractType|lower}}</h3>
-            <div class="candidatesContainer">
-            {% for candidate in candidates %}
-                <div class="candidateCard">
-                <h4>{{candidate.firstName}} {{candidate.lastName}}</h4>
-                {% if candidate.photo is not empty %}
-                    <img src="{{vich_uploader_asset(candidate)}}" alt="Une photo de {{candidate.firstName}} {{candidate.lastName}}">
-                {% else %}
-                <img src="{{asset('images/placeholder.png')}}" alt="Une photo de {{candidate.firstName}} {{candidate.lastName}}">
-                {% endif %}
-                <p><a href="mailto:{{candidate.email}}">{{candidate.email}}</a></p>
+            {% endif %}
+            {% if candidates is not empty %}
+                <h3>Liste des candidats qui cherche actuellement un(e) {{offer.contractType|lower}}</h3>
+                <div class="candidatesContainer">
+                {% for candidate in candidates %}
+                    <div class="candidateCard">
+                    <h4>{{candidate.firstName}} {{candidate.lastName}}</h4>
+                    {% if candidate.photo is not empty %}
+                        <img src="{{vich_uploader_asset(candidate)}}" alt="Une photo de {{candidate.firstName}} {{candidate.lastName}}">
+                    {% else %}
+                    <img src="{{asset('images/placeholder.png')}}" alt="Une photo de {{candidate.firstName}} {{candidate.lastName}}">
+                    {% endif %}
+                    <p><a href="mailto:{{candidate.email}}">{{candidate.email}}</a></p>
+                    </div>
+                {% endfor %}
                 </div>
-            {% endfor %}
-            </div>
+            {% endif %}
         {% endif %}
 
         <a href="/offer" class="button">Retour à la liste.</a>

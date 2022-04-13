@@ -98,7 +98,7 @@ class OfferController extends AbstractController
 
                 $manager->flush();
 
-                return $this->redirectToRoute('app_offer_index');
+                return $this->redirectToRoute('app_company_offers');
             }
 
             return $this->render('offer/createOffer.html.twig', [
