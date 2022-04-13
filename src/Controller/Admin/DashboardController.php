@@ -12,7 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 
-// #[IsGranted('ROLE_ADMIN', message: 'You must be logged-in to access this resource')]
+#[IsGranted('ROLE_ADMIN', message: 'You must be logged-in to access this resource')]
 class DashboardController extends AbstractDashboardController
 {
     #[Route('/admin', name: 'admin')]
