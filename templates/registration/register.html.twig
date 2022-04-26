@@ -12,9 +12,9 @@
         {{ form_row(registrationForm.city,{label: 'Ville'})   }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.logoFile) }}
-        {{ form_row(registrationForm.agreeTerms,{label: 'Acceptez les termes'})   }}
+        {{ form_row(registrationForm.agreeTerms,{label: 'Êtes vous sur ?'})   }}
 
-        <button type="submit" class="button">Register</button>
+        <button type="submit" class="button">Confirmer l'inscription</button>
     {{ form_end(registrationForm) }}
 </section>
 {% endblock %}

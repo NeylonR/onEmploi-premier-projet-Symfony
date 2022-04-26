@@ -54,7 +54,7 @@ a{
 
 form:not(.hiddenForm){
     @include flex(center, column, stretch);
-    width: 30%;
+    width: 40%;
     padding: 0 0 3em 0;
 
     input, textarea{

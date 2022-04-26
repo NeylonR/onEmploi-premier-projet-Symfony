@@ -10,14 +10,14 @@
     {% for offer in offers %}
         <div class="offerContainer">
             <div class="leftBlock">
-                <h3><a href="/offer/id={{offer.id}}"> {{offer.title}} </a></h3>
+                <h3><a href="/offer/id={{offer.id}}"> {{offer.title}}</a></h3>
                 <p><strong>Posté par</strong> : {{offer.getAuthor()|capitalize}} à {{offer.city|capitalize}} </p>
                 {% if offer.author.logo is not empty %}
                 <img src="{{vich_uploader_asset(offer.author)}}" alt="">
                 {% endif %}
                 <p class="offerDescription">
-                {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}.
-                {# {{offer.description | slice(0,150)}}...#} </p> 
+                {{ offer.description > 200 ? offer.description|slice(0, 201)|split(' ')|slice(0, -1)|join(' ') ~ '…' : offer.description }}</p> 
+                <a href="/offer/id={{offer.id}}" class="moreInfo">Détails</a>
                 <p>Publié le {{offer.createdAt|date('d/m/Y')}}
                 {% if offer.updatedAt %}. </p>
                     <p>Dernière actualisation le {{offer.updatedAt|date('d/m/Y à h:m')}} </p>
