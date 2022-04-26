@@ -1,8 +1,8 @@
 {
-  "build/app.css": "/build/app.css",
-  "build/app.js": "/build/app.js",
-  "build/runtime.js": "/build/runtime.js",
-  "build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ob-7db861.js": "/build/vendors-node_modules_symfony_stimulus-bridge_dist_index_js-node_modules_core-js_modules_es_ob-7db861.js",
+  "build/app.css": "/build/app.64d9d468.css",
+  "build/app.js": "/build/app.beff9090.js",
+  "build/runtime.js": "/build/runtime.61b1725c.js",
+  "build/758.4c96db9f.js": "/build/758.4c96db9f.js",
   "build/fonts/Roboto-Regular.ttf": "/build/fonts/Roboto-Regular.a8d6ac03.ttf",
   "build/fonts/Roboto-Bold.ttf": "/build/fonts/Roboto-Bold.75371f53.ttf"
 }
